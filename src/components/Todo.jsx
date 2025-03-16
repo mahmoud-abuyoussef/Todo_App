@@ -24,7 +24,7 @@ export default function Todo() {
 
             <Grid2 size={8} className="!flex !flex-col !items-end">
               <Typography className="!font-bold">المهمة الأولي</Typography>
-              <Typography className="!font-bold">تفاصيل المهمة الأولي</Typography>
+              <Typography className="!font-bold">تفاصيل المهمة</Typography>
             </Grid2>
           </Grid2>
         </CardContent>
