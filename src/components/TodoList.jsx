@@ -1,5 +1,5 @@
-import { Card, CardContent, Container, Divider, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import Todo from "./Todo";
+import { Card, CardContent, Container, Divider, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 
 export default function TodoList() {
   return (
@@ -10,6 +10,7 @@ export default function TodoList() {
             <Typography variant="h1" gutterBottom>
               مهامي
             </Typography>
+            <br />
 
             <Divider />
 
@@ -19,10 +20,6 @@ export default function TodoList() {
               <ToggleButton>الكل</ToggleButton>
             </ToggleButtonGroup>
 
-            <Todo />
-            <Todo />
-            <Todo />
-            <Todo />
             <Todo />
           </CardContent>
         </Card>
