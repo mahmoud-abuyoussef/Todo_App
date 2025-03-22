@@ -9,9 +9,7 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex items-center h-screen">
-        <TodoList />
-      </div>
+      <TodoList />
     </ThemeProvider>
   );
 }

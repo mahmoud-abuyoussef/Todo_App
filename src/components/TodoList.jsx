@@ -1,7 +1,18 @@
 import Todo from "./Todo";
-import { Card, CardContent, Container, Divider, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
+import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 
 export default function TodoList() {
+  const todos = [
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
+  ];
   return (
     <>
       <Container maxWidth="md">
@@ -20,7 +31,23 @@ export default function TodoList() {
               <ToggleButton>الكل</ToggleButton>
             </ToggleButtonGroup>
 
-            <Todo />
+            <br />
+            <br />
+
+            <Grid2 container spacing={2} style={{ padding: "0 20px" }}>
+              <Grid2 size={4}>
+                <Button variant="contained" style={{ width: "100%", height: "100%" }}>
+                  إضافة مهمة
+                </Button>
+              </Grid2>
+
+              <Grid2 size={8}>
+                <TextField style={{ width: "100%" }} id="outlined-basic" label="عنوان المهمة" variant="outlined" />
+              </Grid2>
+            </Grid2>
+            {todos.map((todo) => {
+              return <Todo key={todo.id} todo={todo} />;
+            })}
           </CardContent>
         </Card>
       </Container>

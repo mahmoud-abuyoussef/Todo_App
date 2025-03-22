@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Card, CardContent, Grid2, IconButton, Typography } from "@mui/material";
 
-export default function Todo() {
+export default function Todo({ todo }) {
   return (
     <>
       <Card className="!bg-[#0075ff] !m-5">
@@ -23,8 +23,8 @@ export default function Todo() {
             </Grid2>
 
             <Grid2 size={8} className="!flex !flex-col !items-end">
-              <Typography className="!font-bold">المهمة الأولي</Typography>
-              <Typography className="!font-bold">تفاصيل المهمة</Typography>
+              <Typography className="!font-bold">{todo.title}</Typography>
+              <Typography className="!font-bold">{todo.details}</Typography>
             </Grid2>
           </Grid2>
         </CardContent>
