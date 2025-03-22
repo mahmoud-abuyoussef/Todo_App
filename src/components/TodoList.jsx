@@ -24,10 +24,21 @@ export default function TodoList() {
     setTitle("");
   }
 
+  function handelCheckClick(id) {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          todo.isCompleted = !todo.isCompleted;
+        }
+        return todo;
+      })
+    );
+  }
+
   return (
     <>
-      <Container maxWidth="md">
-        <Card sx={{ minWidth: 275, direction: "ltr" }}>
+      <Container>
+        <Card sx={{ direction: "ltr" }}>
           <CardContent className="text-center">
             <Typography variant="h1" gutterBottom>
               مهامي
@@ -58,7 +69,7 @@ export default function TodoList() {
             </Grid2>
 
             {todos.map((todo) => {
-              return <Todo key={todo.id} todo={todo} />;
+              return <Todo key={todo.id} todo={todo} handelCheckClick={handelCheckClick} />;
             })}
           </CardContent>
         </Card>

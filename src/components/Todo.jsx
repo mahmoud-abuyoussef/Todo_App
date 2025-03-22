@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Card, CardContent, Grid2, IconButton, Typography } from "@mui/material";
 
-export default function Todo({ todo }) {
+export default function Todo({ todo, handelCheckClick }) {
   return (
     <>
       <Card className="!bg-[#0075ff] !m-5">
@@ -11,8 +11,9 @@ export default function Todo({ todo }) {
           <Grid2 container spacing={2}>
             <Grid2 size={4}>
               <IconButton>
-                <CheckCircleIcon className="text-white" />
+                <CheckCircleIcon onClick={() => handelCheckClick(todo.id)} className={`${todo.isCompleted ? "text-green-400" : "text-white"}`} />
               </IconButton>
+
               <IconButton>
                 <EditIcon className="text-white" />
               </IconButton>
@@ -24,6 +25,7 @@ export default function Todo({ todo }) {
 
             <Grid2 size={8} className="!flex !flex-col !items-end">
               <Typography className="!font-bold">{todo.title}</Typography>
+
               <Typography className="!font-bold">{todo.details}</Typography>
             </Grid2>
           </Grid2>
