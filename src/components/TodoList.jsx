@@ -20,22 +20,46 @@ export default function TodoList() {
     setTodoInputs({ title: "", details: "" });
   }
 
+  const completedTodos = todos.filter((todo) => todo.isCompleted);
+
+  const uncompletedTodos = todos.filter((todo) => !todo.isCompleted);
+
+  let todosRenderd = todos;
+
+  const [displayTodosType, setDisplayTodosType] = useState("all");
+  function changeDisplayTodosType(e) {
+    setDisplayTodosType(e.target.value);
+  }
+
+  switch (displayTodosType) {
+    case "completed":
+      todosRenderd = completedTodos;
+      break;
+    case "non-completed":
+      todosRenderd = uncompletedTodos;
+      break;
+    default:
+      todosRenderd = todos;
+  }
+
+  const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} />);
+
   return (
     <>
       <Container>
         <Card sx={{ direction: "ltr" }}>
           <CardContent className="text-center">
             <Typography variant="h1" gutterBottom>
-              مهامي
+              قائمة المهام
             </Typography>
             <br />
 
             <Divider />
 
-            <ToggleButtonGroup exclusive style={{ marginTop: "20px" }}>
-              <ToggleButton>غير منجز</ToggleButton>
-              <ToggleButton>منجز</ToggleButton>
-              <ToggleButton>الكل</ToggleButton>
+            <ToggleButtonGroup value={displayTodosType} onChange={changeDisplayTodosType} exclusive style={{ marginTop: "20px" }}>
+              <ToggleButton value={"non-completed"}>غير منجز</ToggleButton>
+              <ToggleButton value={"completed"}>منجز</ToggleButton>
+              <ToggleButton value={"all"}>الكل</ToggleButton>
             </ToggleButtonGroup>
 
             <br />
@@ -72,9 +96,7 @@ export default function TodoList() {
               </Grid2>
             </Grid2>
 
-            {todos.map((todo) => {
-              return <Todo key={todo.id} todo={todo} />;
-            })}
+            {todoJSX}
           </CardContent>
         </Card>
       </Container>
