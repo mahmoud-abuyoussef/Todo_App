@@ -1,9 +1,24 @@
+import { useContext } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { TodosContext } from "../context/todosContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Card, CardContent, Grid2, IconButton, Typography } from "@mui/material";
 
-export default function Todo({ todo, handelCheckClick }) {
+export default function Todo({ todo }) {
+  const { todos, setTodos } = useContext(TodosContext);
+
+  function handelCheckClick(id) {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          todo.isCompleted = !todo.isCompleted;
+        }
+        return todo;
+      })
+    );
+  }
+
   return (
     <>
       <Card className="!bg-[#0075ff] !m-5">

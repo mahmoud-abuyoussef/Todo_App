@@ -1,38 +1,17 @@
 import Todo from "./Todo";
-import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useContext, useState } from "react";
+import { TodosContext } from "../context/todosContext";
 import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 
 export default function TodoList() {
-  const initialTodos = [
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-    { id: uuidv4(), title: "قراءة كتاب", details: "details", isCompleted: false },
-  ];
-
+  const { todos, setTodos } = useContext(TodosContext);
   const [title, setTitle] = useState("");
-  const [todos, setTodos] = useState(initialTodos);
 
   function handelAddClick() {
     const newTodo = { id: uuidv4(), title: title, details: "details", isCompleted: false };
     setTodos([...todos, newTodo]);
     setTitle("");
-  }
-
-  function handelCheckClick(id) {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          todo.isCompleted = !todo.isCompleted;
-        }
-        return todo;
-      })
-    );
   }
 
   return (
@@ -69,7 +48,7 @@ export default function TodoList() {
             </Grid2>
 
             {todos.map((todo) => {
-              return <Todo key={todo.id} todo={todo} handelCheckClick={handelCheckClick} />;
+              return <Todo key={todo.id} todo={todo} />;
             })}
           </CardContent>
         </Card>
