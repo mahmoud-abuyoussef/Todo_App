@@ -3,10 +3,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TodosContext } from "../context/todosContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid2, IconButton, Typography } from "@mui/material";
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid2, IconButton, TextField, Typography } from "@mui/material";
 
 export default function Todo({ todo }) {
   const { todos, setTodos } = useContext(TodosContext);
+  const [updatedTodo, setUpdatedTodo] = useState({ title: todo.title, details: todo.details });
 
   function handelCheckClick(id) {
     setTodos(
@@ -18,32 +19,107 @@ export default function Todo({ todo }) {
       })
     );
   }
-  const [open, setOpen] = useState(false);
 
-  function handleClickOpen() {
-    setOpen(true);
+  const [openDelete, setOpenDelete] = useState(false);
+
+  function handleOpenClick() {
+    setOpenDelete(true);
   }
 
-  function handleClose() {
-    setOpen(false);
+  function handleDeleteClose() {
+    setOpenDelete(false);
   }
 
-  function handelDelete() {
-    setTodos(todos.filter((todo) => todo.id !== todo.id));
-    setOpen(false);
+  function handelDeleteClick() {
+    setTodos(todos.filter((t) => t.id !== todo.id));
+    setOpenDelete(false);
+  }
+
+  const [openEdit, setOpenEdit] = useState(false);
+
+  function handelEditClick() {
+    setOpenEdit(true);
+  }
+
+  function handleEditClose() {
+    setOpenEdit(false);
+  }
+
+  function handelEditConfirmClick() {
+    setTodos(
+      todos.map((t) => {
+        if (t.id === todo.id) {
+          return { ...t, title: updatedTodo.title, details: updatedTodo.details };
+        }
+        return t;
+      })
+    );
   }
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+      <Dialog open={openDelete} onClose={handleDeleteClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">حذف مهمة: {todo.title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">هل انت متأكد من حذف المهمة؛ لا يمكن التراجع عن هذا القرار</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>الغاء</Button>
-          <Button onClick={handelDelete} autoFocus style={{ color: "red" }}>
+          <Button onClick={handleDeleteClose}>الغاء</Button>
+          <Button onClick={handelDeleteClick} autoFocus style={{ color: "red" }}>
             حذف
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openEdit}
+        onClose={handleEditClose}
+        slotProps={{
+          paper: {
+            component: "form",
+            onSubmit: (event) => {
+              event.preventDefault();
+              handleEditClose();
+            },
+          },
+        }}
+      >
+        <DialogTitle>تعديل مهمة</DialogTitle>
+        <DialogContent>
+          <DialogContentText>هل أنت متأكد من تعديل المهمة: {todo.title}</DialogContentText>
+
+          <TextField
+            value={updatedTodo.title}
+            onChange={(e) => setUpdatedTodo({ ...updatedTodo, title: e.target.value })}
+            autoFocus
+            required
+            margin="dense"
+            id="title"
+            name="title"
+            label="عنوان المهمة"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+
+          <TextField
+            value={updatedTodo.details}
+            onChange={(e) => setUpdatedTodo({ ...updatedTodo, details: e.target.value })}
+            required
+            margin="dense"
+            id="description"
+            name="description"
+            label="تفاصيل المهمة"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleEditClose}>الغاء</Button>
+          <Button type="submit" onClick={handelEditConfirmClick}>
+            تعديل
           </Button>
         </DialogActions>
       </Dialog>
@@ -56,11 +132,11 @@ export default function Todo({ todo }) {
                 <CheckCircleIcon onClick={() => handelCheckClick(todo.id)} className={`${todo.isCompleted ? "text-green-400" : "text-white"}`} />
               </IconButton>
 
-              <IconButton>
+              <IconButton onClick={handelEditClick}>
                 <EditIcon className="text-white" />
               </IconButton>
 
-              <IconButton onClick={handleClickOpen}>
+              <IconButton onClick={handleOpenClick}>
                 <DeleteIcon className="text-red-500" />
               </IconButton>
             </Grid2>
