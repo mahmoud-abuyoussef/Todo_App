@@ -10,14 +10,16 @@ export default function Todo({ todo }) {
   const [updatedTodo, setUpdatedTodo] = useState({ title: todo.title, details: todo.details });
 
   function handelCheckClick(id) {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          todo.isCompleted = !todo.isCompleted;
-        }
-        return todo;
-      })
-    );
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.isCompleted = !todo.isCompleted;
+      }
+      return todo;
+    });
+
+    setTodos(updatedTodos);
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
   }
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -31,7 +33,12 @@ export default function Todo({ todo }) {
   }
 
   function handelDeleteClick() {
-    setTodos(todos.filter((t) => t.id !== todo.id));
+    const updatedTodos = todos.filter((t) => t.id !== todo.id);
+
+    setTodos(updatedTodos);
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
     setOpenDelete(false);
   }
 
@@ -46,14 +53,14 @@ export default function Todo({ todo }) {
   }
 
   function handelEditConfirmClick() {
-    setTodos(
-      todos.map((t) => {
-        if (t.id === todo.id) {
-          return { ...t, title: updatedTodo.title, details: updatedTodo.details };
-        }
-        return t;
-      })
-    );
+    const updatedTodos = todos.map((t) => {
+      if (t.id === todo.id) {
+        return { ...t, title: updatedTodo.title, details: updatedTodo.details };
+      }
+      return t;
+    });
+    setTodos(updatedTodos);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
   }
 
   return (

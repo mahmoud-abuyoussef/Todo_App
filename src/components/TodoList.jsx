@@ -6,12 +6,18 @@ import { Button, Card, CardContent, Container, Divider, Grid2, TextField, Toggle
 
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
-  const [title, setTitle] = useState("");
+  const [todoInputs, setTodoInputs] = useState({ title: "", details: "" });
 
   function handelAddClick() {
-    const newTodo = { id: uuidv4(), title: title, details: "details", isCompleted: false };
-    setTodos([...todos, newTodo]);
-    setTitle("");
+    const newTodo = { id: uuidv4(), title: todoInputs.title, details: todoInputs.details, isCompleted: false };
+
+    const updatedTodos = [...todos, newTodo];
+
+    setTodos(updatedTodos);
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
+    setTodoInputs({ title: "", details: "" });
   }
 
   return (
@@ -43,7 +49,26 @@ export default function TodoList() {
               </Grid2>
 
               <Grid2 size={8}>
-                <TextField value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%" }} id="outlined-basic" label="عنوان المهمة" variant="outlined" />
+                <TextField
+                  value={todoInputs.title}
+                  onChange={(e) => setTodoInputs({ ...todoInputs, title: e.target.value })}
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="عنوان المهمة"
+                  variant="outlined"
+                />
+
+                <br />
+                <br />
+
+                <TextField
+                  value={todoInputs.details}
+                  onChange={(e) => setTodoInputs({ ...todoInputs, details: e.target.value })}
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="تفاصيل المهمة"
+                  variant="outlined"
+                />
               </Grid2>
             </Grid2>
 
