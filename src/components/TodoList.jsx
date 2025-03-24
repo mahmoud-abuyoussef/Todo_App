@@ -19,12 +19,11 @@ export default function TodoList() {
 
     setTodoInputs({ title: "", details: "" });
   }
+  let todosRenderd = todos;
 
   const completedTodos = todos.filter((todo) => todo.isCompleted);
 
   const uncompletedTodos = todos.filter((todo) => !todo.isCompleted);
-
-  let todosRenderd = todos;
 
   const [displayTodosType, setDisplayTodosType] = useState("all");
   function changeDisplayTodosType(e) {
@@ -49,14 +48,14 @@ export default function TodoList() {
       <Container>
         <Card sx={{ direction: "ltr" }}>
           <CardContent className="text-center">
-            <Typography variant="h1" gutterBottom>
+            <Typography color="primary" variant="h1" gutterBottom>
               قائمة المهام
             </Typography>
             <br />
 
             <Divider />
 
-            <ToggleButtonGroup value={displayTodosType} onChange={changeDisplayTodosType} exclusive style={{ marginTop: "20px" }}>
+            <ToggleButtonGroup color="primary" value={displayTodosType} onChange={changeDisplayTodosType} exclusive style={{ marginTop: "20px" }}>
               <ToggleButton value={"non-completed"}>غير منجز</ToggleButton>
               <ToggleButton value={"completed"}>منجز</ToggleButton>
               <ToggleButton value={"all"}>الكل</ToggleButton>
@@ -65,26 +64,14 @@ export default function TodoList() {
             <br />
             <br />
 
-            <Grid2 container spacing={2} style={{ padding: "0 20px" }}>
+            <Grid2 container spacing={2} style={{ padding: "20px", margin: "20px", backgroundColor: "#f5f5f5", borderRadius: "10px" }}>
               <Grid2 size={4}>
-                <Button onClick={handelAddClick} variant="contained" style={{ width: "100%", height: "100%" }}>
+                <Button disabled={todoInputs.title.length === 0} onClick={handelAddClick} variant="contained" style={{ width: "100%", height: "100%" }}>
                   إضافة مهمة
                 </Button>
               </Grid2>
 
-              <Grid2 size={8}>
-                <TextField
-                  value={todoInputs.title}
-                  onChange={(e) => setTodoInputs({ ...todoInputs, title: e.target.value })}
-                  style={{ width: "100%" }}
-                  id="outlined-basic"
-                  label="عنوان المهمة"
-                  variant="outlined"
-                />
-
-                <br />
-                <br />
-
+              <Grid2 size={4}>
                 <TextField
                   value={todoInputs.details}
                   onChange={(e) => setTodoInputs({ ...todoInputs, details: e.target.value })}
@@ -94,9 +81,20 @@ export default function TodoList() {
                   variant="outlined"
                 />
               </Grid2>
+
+              <Grid2 size={4}>
+                <TextField
+                  value={todoInputs.title}
+                  onChange={(e) => setTodoInputs({ ...todoInputs, title: e.target.value })}
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="عنوان المهمة"
+                  variant="outlined"
+                />
+              </Grid2>
             </Grid2>
 
-            {todoJSX}
+            <div style={{ maxHeight: "500px", overflow: "auto" }}>{todoJSX}</div>
           </CardContent>
         </Card>
       </Container>
