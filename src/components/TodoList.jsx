@@ -1,25 +1,10 @@
 import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
+import DeleteTodoModal from "./DeleteTodoModal";
+import UpdateTodoModal from "./UpdateTodoModal";
 import { useContext, useState, useMemo } from "react";
 import { TodosContext } from "../context/todosContext";
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid2,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
-import DeleteModal from "./DeleteModal";
+import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
@@ -80,11 +65,37 @@ export default function TodoList() {
     setOpenDelete(false);
   }
 
-  const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} handleOpenDeleteClick={handleOpenDeleteClick} />);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [updatedTodo, setUpdatedTodo] = useState({ title: todo?.title, details: todo?.details });
+
+  function handelEditClick(todo) {
+    setOpenEdit(true);
+    setTodo(todo);
+    setUpdatedTodo({ title: todo?.title, details: todo?.details });
+  }
+
+  function handleEditClose() {
+    setOpenEdit(false);
+  }
+
+  function handelEditConfirmClick() {
+    const updatedTodos = todos.map((t) => {
+      if (t.id === todo.id) {
+        return { ...t, title: updatedTodo?.title, details: updatedTodo?.details };
+      }
+      return t;
+    });
+    setTodos(updatedTodos);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+  }
+
+  const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} handleOpenDeleteClick={handleOpenDeleteClick} handelEditClick={handelEditClick} />);
 
   return (
     <>
-      <DeleteModal open={openDelete} handleClose={handleDeleteClose} handleDeleteClick={handleDeleteClick} todo={todo} />
+      <DeleteTodoModal open={openDelete} handleClose={handleDeleteClose} handleDeleteClick={handleDeleteClick} todo={todo} />
+
+      <UpdateTodoModal openEdit={openEdit} handleEditClose={handleEditClose} todo={todo} updatedTodo={updatedTodo} setUpdatedTodo={setUpdatedTodo} handelEditConfirmClick={handelEditConfirmClick} />
 
       <Container>
         <Card sx={{ direction: "ltr" }}>
