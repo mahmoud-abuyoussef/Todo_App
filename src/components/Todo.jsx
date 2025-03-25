@@ -1,13 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TodosContext } from "../context/todosContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid2, IconButton, TextField, Typography } from "@mui/material";
+import { Card, CardContent, Grid2, IconButton, Typography } from "@mui/material";
 
-export default function Todo({ todo }) {
+export default function Todo({ todo, handleOpenDeleteClick }) {
   const { todos, setTodos } = useContext(TodosContext);
-  const [updatedTodo, setUpdatedTodo] = useState({ title: todo.title, details: todo.details });
 
   function handelCheckClick(id) {
     const updatedTodos = todos.map((todo) => {
@@ -22,63 +21,31 @@ export default function Todo({ todo }) {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
   }
 
-  const [openDelete, setOpenDelete] = useState(false);
+  // const [openEdit, setOpenEdit] = useState(false);
+  // const [updatedTodo, setUpdatedTodo] = useState({ title: todo.title, details: todo.details });
 
-  function handleOpenClick() {
-    setOpenDelete(true);
-  }
+  // function handelEditClick() {
+  //   setOpenEdit(true);
+  // }
 
-  function handleDeleteClose() {
-    setOpenDelete(false);
-  }
+  // function handleEditClose() {
+  //   setOpenEdit(false);
+  // }
 
-  function handelDeleteClick() {
-    const updatedTodos = todos.filter((t) => t.id !== todo.id);
-
-    setTodos(updatedTodos);
-
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
-
-    setOpenDelete(false);
-  }
-
-  const [openEdit, setOpenEdit] = useState(false);
-
-  function handelEditClick() {
-    setOpenEdit(true);
-  }
-
-  function handleEditClose() {
-    setOpenEdit(false);
-  }
-
-  function handelEditConfirmClick() {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === todo.id) {
-        return { ...t, title: updatedTodo.title, details: updatedTodo.details };
-      }
-      return t;
-    });
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
-  }
+  // function handelEditConfirmClick() {
+  //   const updatedTodos = todos.map((t) => {
+  //     if (t.id === todo.id) {
+  //       return { ...t, title: updatedTodo.title, details: updatedTodo.details };
+  //     }
+  //     return t;
+  //   });
+  //   setTodos(updatedTodos);
+  //   localStorage.setItem("todos", JSON.stringify(updatedTodos));
+  // }
 
   return (
     <>
-      <Dialog open={openDelete} onClose={handleDeleteClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">حذف مهمة: {todo.title}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">هل انت متأكد من حذف المهمة؛ لا يمكن التراجع عن هذا القرار</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteClose}>الغاء</Button>
-          <Button onClick={handelDeleteClick} autoFocus style={{ color: "red" }}>
-            حذف
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
+      {/* <Dialog
         open={openEdit}
         onClose={handleEditClose}
         slotProps={{
@@ -129,7 +96,7 @@ export default function Todo({ todo }) {
             تعديل
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
       <Card className="!bg-[#0075ff] !m-5">
         <CardContent className="text-white">
@@ -139,11 +106,11 @@ export default function Todo({ todo }) {
                 <CheckCircleIcon onClick={() => handelCheckClick(todo.id)} className={`${todo.isCompleted ? "text-green-400" : "text-white"}`} />
               </IconButton>
 
-              <IconButton onClick={handelEditClick}>
+              {/* <IconButton onClick={handelEditClick}>
                 <EditIcon className="text-white" />
-              </IconButton>
+              </IconButton> */}
 
-              <IconButton onClick={handleOpenClick}>
+              <IconButton onClick={() => handleOpenDeleteClick(todo)}>
                 <DeleteIcon className="text-red-500" />
               </IconButton>
             </Grid2>

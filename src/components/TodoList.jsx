@@ -2,7 +2,24 @@ import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
 import { useContext, useState, useMemo } from "react";
 import { TodosContext } from "../context/todosContext";
-import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid2,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
+import DeleteModal from "./DeleteModal";
 
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
@@ -42,10 +59,33 @@ export default function TodoList() {
       todosRenderd = todos;
   }
 
-  const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} />);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [todo, setTodo] = useState(null);
+  function handleOpenDeleteClick(todo) {
+    setOpenDelete(true);
+    setTodo(todo);
+  }
+
+  function handleDeleteClose() {
+    setOpenDelete(false);
+  }
+
+  function handleDeleteClick() {
+    const updatedTodos = todos.filter((t) => t.id !== todo.id);
+
+    setTodos(updatedTodos);
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
+    setOpenDelete(false);
+  }
+
+  const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} handleOpenDeleteClick={handleOpenDeleteClick} />);
 
   return (
     <>
+      <DeleteModal open={openDelete} handleClose={handleDeleteClose} handleDeleteClick={handleDeleteClick} todo={todo} />
+
       <Container>
         <Card sx={{ direction: "ltr" }}>
           <CardContent className="text-center">
