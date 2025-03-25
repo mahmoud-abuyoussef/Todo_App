@@ -5,8 +5,11 @@ import UpdateTodoModal from "./UpdateTodoModal";
 import { useContext, useState, useMemo } from "react";
 import { TodosContext } from "../context/todosContext";
 import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { ToastContext } from "../context/ToastContext";
 
 export default function TodoList() {
+  const { handleHideToast } = useContext(ToastContext);
+
   const { todos, setTodos } = useContext(TodosContext);
   const [todoInputs, setTodoInputs] = useState({ title: "", details: "" });
 
@@ -20,6 +23,7 @@ export default function TodoList() {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
 
     setTodoInputs({ title: "", details: "" });
+    handleHideToast("تمت الإضافة بنجاح");
   }
 
   let todosRenderd = todos;
@@ -63,6 +67,7 @@ export default function TodoList() {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
 
     setOpenDelete(false);
+    handleHideToast("تمت الحذف بنجاح");
   }
 
   const [openEdit, setOpenEdit] = useState(false);
@@ -85,8 +90,12 @@ export default function TodoList() {
       }
       return t;
     });
+
     setTodos(updatedTodos);
+
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
+    handleHideToast("تمت التحديث بنجاح");
   }
 
   const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} handleOpenDeleteClick={handleOpenDeleteClick} handelEditClick={handelEditClick} />);

@@ -2,12 +2,14 @@ import { useContext } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TodosContext } from "../context/todosContext";
+import { ToastContext } from "../context/ToastContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Card, CardContent, Grid2, IconButton, Typography } from "@mui/material";
 
 export default function Todo({ todo, handleOpenDeleteClick, handelEditClick }) {
+  const { handleHideToast } = useContext(ToastContext);
+  
   const { todos, setTodos } = useContext(TodosContext);
-
   function handelCheckClick(id) {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
@@ -19,6 +21,7 @@ export default function Todo({ todo, handleOpenDeleteClick, handelEditClick }) {
     setTodos(updatedTodos);
 
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    handleHideToast("تم تحديث الحالة بنجاح");
   }
 
   return (
