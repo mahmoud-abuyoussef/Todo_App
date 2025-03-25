@@ -1,6 +1,6 @@
 import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import { TodosContext } from "../context/todosContext";
 import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 
@@ -19,11 +19,12 @@ export default function TodoList() {
 
     setTodoInputs({ title: "", details: "" });
   }
+
   let todosRenderd = todos;
 
-  const completedTodos = todos.filter((todo) => todo.isCompleted);
+  const completedTodos = useMemo(() => todos.filter((todo) => todo.isCompleted), [todos]);
 
-  const uncompletedTodos = todos.filter((todo) => !todo.isCompleted);
+  const unCompletedTodos = useMemo(() => todos.filter((todo) => !todo.isCompleted), [todos]);
 
   const [displayTodosType, setDisplayTodosType] = useState("all");
   function changeDisplayTodosType(e) {
@@ -35,7 +36,7 @@ export default function TodoList() {
       todosRenderd = completedTodos;
       break;
     case "non-completed":
-      todosRenderd = uncompletedTodos;
+      todosRenderd = unCompletedTodos;
       break;
     default:
       todosRenderd = todos;
