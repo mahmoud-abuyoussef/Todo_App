@@ -4,17 +4,33 @@ import DeleteTodoModal from "./DeleteTodoModal";
 import UpdateTodoModal from "./UpdateTodoModal";
 import { useContext, useState, useMemo } from "react";
 import { TodosContext } from "../context/todosContext";
-// import { ToastContext } from "../context/ToastContext";
-import { Button, Card, CardContent, Container, Divider, Grid2, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { ToastContext } from "../context/ToastContext";
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Divider,
+  Grid2,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 
 export default function TodoList() {
-  // const { handleHideToast } = useContext(ToastContext);
+  const { handleHideToast } = useContext(ToastContext);
 
   const { todos, setTodos } = useContext(TodosContext);
   const [todoInputs, setTodoInputs] = useState({ title: "", details: "" });
 
   function handelAddClick() {
-    const newTodo = { id: uuidv4(), title: todoInputs.title, details: todoInputs.details, isCompleted: false };
+    const newTodo = {
+      id: uuidv4(),
+      title: todoInputs.title,
+      details: todoInputs.details,
+      isCompleted: false,
+    };
 
     const updatedTodos = [...todos, newTodo];
 
@@ -23,7 +39,8 @@ export default function TodoList() {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
 
     setTodoInputs({ title: "", details: "" });
-    // handleHideToast("تمت الإضافة بنجاح");
+    
+    handleHideToast("تمت الإضافة بنجاح");
   }
 
   let todosRenderd = todos;
@@ -67,7 +84,7 @@ export default function TodoList() {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
 
     setOpenDelete(false);
-    // handleHideToast("تمت الحذف بنجاح");
+    handleHideToast("تمت الحذف بنجاح");
   }
 
   const [openEdit, setOpenEdit] = useState(false);
@@ -95,16 +112,35 @@ export default function TodoList() {
 
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
 
-    // handleHideToast("تمت التحديث بنجاح");
+    handleHideToast("تمت التحديث بنجاح");
   }
 
-  const todoJSX = todosRenderd.map((todo) => <Todo key={todo.id} todo={todo} handleOpenDeleteClick={handleOpenDeleteClick} handelEditClick={handelEditClick} />);
+  const todoJSX = todosRenderd.map((todo) => (
+    <Todo
+      key={todo.id}
+      todo={todo}
+      handleOpenDeleteClick={handleOpenDeleteClick}
+      handelEditClick={handelEditClick}
+    />
+  ));
 
   return (
     <>
-      <DeleteTodoModal open={openDelete} handleClose={handleDeleteClose} handleDeleteClick={handleDeleteClick} todo={todo} />
+      <DeleteTodoModal
+        open={openDelete}
+        handleClose={handleDeleteClose}
+        handleDeleteClick={handleDeleteClick}
+        todo={todo}
+      />
 
-      <UpdateTodoModal openEdit={openEdit} handleEditClose={handleEditClose} todo={todo} updatedTodo={updatedTodo} setUpdatedTodo={setUpdatedTodo} handelEditConfirmClick={handelEditConfirmClick} />
+      <UpdateTodoModal
+        openEdit={openEdit}
+        handleEditClose={handleEditClose}
+        todo={todo}
+        updatedTodo={updatedTodo}
+        setUpdatedTodo={setUpdatedTodo}
+        handelEditConfirmClick={handelEditConfirmClick}
+      />
 
       <Container>
         <Card sx={{ direction: "ltr" }}>
@@ -116,7 +152,13 @@ export default function TodoList() {
 
             <Divider />
 
-            <ToggleButtonGroup color="primary" value={displayTodosType} onChange={changeDisplayTodosType} exclusive style={{ marginTop: "20px" }}>
+            <ToggleButtonGroup
+              color="primary"
+              value={displayTodosType}
+              onChange={changeDisplayTodosType}
+              exclusive
+              style={{ marginTop: "20px" }}
+            >
               <ToggleButton value={"non-completed"}>غير منجز</ToggleButton>
               <ToggleButton value={"completed"}>منجز</ToggleButton>
               <ToggleButton value={"all"}>الكل</ToggleButton>
@@ -125,9 +167,23 @@ export default function TodoList() {
             <br />
             <br />
 
-            <Grid2 container spacing={2} style={{ padding: "20px", margin: "20px", backgroundColor: "#f5f5f5", borderRadius: "10px" }}>
+            <Grid2
+              container
+              spacing={2}
+              style={{
+                padding: "20px",
+                margin: "20px",
+                backgroundColor: "#f5f5f5",
+                borderRadius: "10px",
+              }}
+            >
               <Grid2 size={4}>
-                <Button disabled={todoInputs.title.length === 0} onClick={handelAddClick} variant="contained" style={{ width: "100%", height: "100%" }}>
+                <Button
+                  disabled={todoInputs.title.length === 0}
+                  onClick={handelAddClick}
+                  variant="contained"
+                  style={{ width: "100%", height: "100%" }}
+                >
                   إضافة مهمة
                 </Button>
               </Grid2>
